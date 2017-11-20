@@ -26,7 +26,6 @@ public class EnemySpawner : MonoBehaviour {
                                                             UnityEngine.Random.Range(-0.2f, 0.2f),
                                                             0);
                 newGO.GetComponent<TargetFollower>().target = target;
-                print(String.Format("spawning +{0}",enemyCount-1));
                 t = 0;
             }
         }
