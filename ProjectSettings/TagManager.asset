@@ -7,6 +7,10 @@ TagManager:
   - Skeleton
   - Key
   - Map
+  - LeftWall
+  - RightWall
+  - TopWall
+  - BottomWall
   layers:
   - Default
   - TransparentFX

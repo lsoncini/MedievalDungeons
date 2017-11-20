@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class KeyboardMovement : MonoBehaviour {
 
     public float speed = 1f;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
 	void Update () {
         Vector3 movingDir = new Vector3(0, 0, 0);
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) {
@@ -34,26 +25,26 @@ public class KeyboardMovement : MonoBehaviour {
     }
 
     private void SetRotation(Vector3 movingDir) {
-        if(movingDir.magnitude == 0)
+        if (movingDir.magnitude == 0)
             return;
 
         int rotationAngle = 0;
 
-        if(movingDir.x == 0) {
-            if(movingDir.y == 1) {
+        if (movingDir.x == 0) {
+            if (movingDir.y == 1) {
                 rotationAngle = 180;
-            } else if(movingDir.y == -1) {
+            } else if (movingDir.y == -1) {
                 rotationAngle = 0;
             }
         } else {
-            if(movingDir.y == 1) {
+            if (movingDir.y == 1) {
                 rotationAngle = 135;
             } else if (movingDir.y == -1) {
                 rotationAngle = 45;
             } else {
                 rotationAngle = 90;
             }
-            rotationAngle = (int)movingDir.x * rotationAngle;
+            rotationAngle = (int) movingDir.x * rotationAngle;
         }
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotationAngle));
     }
