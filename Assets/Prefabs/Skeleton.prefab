@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 50925726022265464}
   - component: {fileID: 60407110634885230}
   - component: {fileID: 114315314209515530}
+  - component: {fileID: 81522839146287022}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Skeleton
@@ -115,6 +116,13 @@ PolygonCollider2D:
       - {x: 0.505, y: -0.25}
       - {x: 0.505, y: -0.089999996}
       - {x: 0.445, y: 0.08}
+--- !u!81 &81522839146287022
+AudioListener:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1377320129674456}
+  m_Enabled: 1
 --- !u!95 &95167933409974442
 Animator:
   serializedVersion: 3

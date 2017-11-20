@@ -13,12 +13,10 @@ public class ItemPicker : MonoBehaviour {
         if (collision.gameObject.CompareTag("Key")) {
             Destroy(collision.gameObject);
             keysPicked++;
-            print(keysPicked);
         }
         if (collision.gameObject.CompareTag("Map")) {
             Destroy(collision.gameObject);
             mapsPicked++;
-            print(mapsPicked);
         }
     }
 

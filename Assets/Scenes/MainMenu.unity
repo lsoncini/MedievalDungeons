@@ -1492,7 +1492,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: ab1626778512dbb488f84165ab059d24, type: 3}
-    m_FontSize: 30
+    m_FontSize: 22
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -1503,7 +1503,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Find out playing the game!
+  m_Text: "Welcome to Medieval Dungeons,\ntry to last for as long as you can! To do
+    so, \nyou have to collect keys to get to the next \ndungeon before you run out
+    of time. Be carefull, \ntraps and spiders may get in your way."
 --- !u!222 &1479173666
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1816,3 +1818,50 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1738225638}
+--- !u!1001 &1809704228
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4830670935578694, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 82926310487191056, guid: fdd035b80530a3e42a170dba3e583584,
+        type: 2}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+  m_IsPrefabParent: 0
