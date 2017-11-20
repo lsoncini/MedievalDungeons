@@ -8,6 +8,9 @@ public class TargetFollower : MonoBehaviour {
     public GameObject target;
     // Update is called once per frame
     void Update() {
-        transform.position += (target.transform.position - this.transform.position) * Time.deltaTime * moveSpeed;
+        Vector3 dir = target.transform.position - this.transform.position;
+        transform.position += dir.normalized * Time.deltaTime * moveSpeed;
+        Quaternion rotation = Quaternion.LookRotation(this.transform.forward, dir.normalized);
+        transform.rotation = rotation;
     }
 }
