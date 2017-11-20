@@ -26,9 +26,11 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        t = Time.deltaTime;
+        t += Time.deltaTime;
         if (t >= 1) {
             TakeTime(1);
+            print(timeLeft);
+            t = 0;
         }
         if(timeLeft <= 0) {
             GameLost();
