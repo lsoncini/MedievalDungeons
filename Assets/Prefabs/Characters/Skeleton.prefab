@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 60407110634885230}
   - component: {fileID: 114315314209515530}
   - component: {fileID: 81522839146287022}
+  - component: {fileID: 114675017235613786}
   m_Layer: 0
   m_Name: Skeleton
   m_TagString: Skeleton
@@ -38,9 +39,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1377320129674456}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9673994, y: -0.47, z: 0}
-  m_LocalScale: {x: 0.23673896, y: 0.3, z: 0.3}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.43441543, y: -0.9873077, z: 0}
+  m_LocalScale: {x: 0.31164563, y: 0.39492312, z: 0.39492312}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -152,6 +153,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+--- !u!114 &114675017235613786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1377320129674456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcddc082264e6404ebd36c5fe7b2e007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keysNeeded: 3
+  mapsNeeded: 0
 --- !u!212 &212069681647369094
 SpriteRenderer:
   m_ObjectHideFlags: 1

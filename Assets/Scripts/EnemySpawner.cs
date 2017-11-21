@@ -11,9 +11,11 @@ public class EnemySpawner : MonoBehaviour {
     public int maxEnemies = 5;
     private float t;
     private int enemyCount = 0;
+    private GameObject[] enemies;
 
     private void Start() {
         t = spawnTime;
+        enemies = new GameObject[maxEnemies];
     }
     private void OnTriggerStay2D(Collider2D collision) {
         t += Time.deltaTime;
@@ -27,7 +29,16 @@ public class EnemySpawner : MonoBehaviour {
                                                             0);
                 newGO.GetComponent<TargetFollower>().target = target;
                 t = 0;
+                enemies[enemyCount - 1] = newGO;
             }
+        }
+    }
+
+    public void DestroyEnemies() {
+        foreach(GameObject go in enemies) {
+            Destroy(go);
+            enemyCount = 0;
+            t = spawnTime;
         }
     }
 }

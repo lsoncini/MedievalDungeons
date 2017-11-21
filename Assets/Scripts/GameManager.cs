@@ -7,13 +7,13 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance = null;
     public int timeForLevel = 0;
 
-    private bool isGameOn;
+    private bool isGameOn = true;
     private int levelsWon = 0;
     private int timeLeft;
     private float t = 0;
 
-    [SerializeField] private GameObject gameLostPanel;
-    [SerializeField] private GameObject nextLevelPanel;
+    [SerializeField] public GameObject gameLostPanel;
+    [SerializeField] public GameObject nextLevelPanel;
 
     private void Awake() {
         levelsWon = 0;
@@ -58,10 +58,12 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameLost() {
+        isGameOn = false;
         gameLostPanel.SetActive(true);
     }
 
     public void LevelWon() {
+        isGameOn = false;
         levelsWon++;
         nextLevelPanel.SetActive(true);
     }
