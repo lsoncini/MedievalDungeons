@@ -10,15 +10,27 @@ public class MapGenerator : MonoBehaviour
 	public GameObject[] mapChunks;
 	public int mapSize = 10;
     public Difficulty difficulty = Difficulty.Easy;
+    public int seed;
 
-    private Transform mountTransform;
+    private GameObject[,] map;
 
-	public void Generate()
+    public void Generate()
 	{
-		mountTransform = gameObject.transform;
-		mountTransform.position = new Vector3(0, 0.1f, 0);
+        UnityEngine.Random.seed = seed;
 
+        map = new GameObject[mapSize, mapSize];
 
+        for(int i = 0; i < mapSize; i++) {
+            for(int j = 0; j < mapSize; j++) {
+                GameObject newGO = Instantiate(mapChunks[getRandomChunkIndex()]) as GameObject;
+                newGO.name = String.Format("dungeon-{0}-{1}", i, j);
+                newGO.transform.parent = transform;
+                
+                newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
+                map[i, j] = newGO;
+            }
+        }
+        
         // generate the array
         // populate the array
         // check everything
@@ -27,15 +39,13 @@ public class MapGenerator : MonoBehaviour
 		
 	}
 	
-	public void ClearMap()
-	{
-		MapChunk[] mc = gameObject.GetComponentsInChildren<MapChunk>();
-		
-		for (int i=0; i<mc.Length; i++)
-		{
-			UnityEngine.Object.DestroyImmediate(mc[i].gameObject);
+	public void ClearMap() {
+        for (int i = 0; i < mapSize; i++) {
+            for(int j = 0; j < mapSize; j++) {
+                DestroyImmediate(map[i, j]);
+            }
 		}
-	}
+    }
 	
 	private int prevIdx = 0;
 	private int getRandomChunkIndex()
