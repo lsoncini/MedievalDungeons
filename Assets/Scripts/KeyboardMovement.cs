@@ -2,9 +2,21 @@
 
 public class KeyboardMovement : MonoBehaviour {
 
+    public float defaultSpeed = 1f;
     public float speed = 1f;
+    private float t = 0;
 
-	void Update () {
+    private void Start() {
+        speed = defaultSpeed;
+    }
+
+    void Update () {
+        if (t <= 0) {
+            speed = defaultSpeed;
+            GetComponent<SpriteRenderer>().color = Color.white;
+        } else {
+            t -= Time.deltaTime;
+        }
         Vector3 movingDir = new Vector3(0, 0, 0);
         if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S)) {
             movingDir.y = -1;
@@ -47,5 +59,11 @@ public class KeyboardMovement : MonoBehaviour {
             rotationAngle = (int) movingDir.x * rotationAngle;
         }
         this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotationAngle));
+    }
+
+    public void AlterSpeed(float speed, float time) {
+        this.speed = speed;
+        t = time;
+        GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0.4f);
     }
 }

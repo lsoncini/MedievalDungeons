@@ -13,9 +13,17 @@ public class EnemySpawner : MonoBehaviour {
     private int enemyCount = 0;
     private GameObject[] enemies;
 
+    public float randomXmin = -0.2f;
+    public float randomXmax = 0.2f;
+    public float randomYmin = -0.2f;
+    public float randomYmax = 0.2f;
+
+    private float zAngle=0f;
+
     private void Start() {
         t = spawnTime;
         enemies = new GameObject[maxEnemies];
+        zAngle = transform.eulerAngles.z;
     }
     private void OnTriggerStay2D(Collider2D collision) {
         t += Time.deltaTime;
@@ -24,10 +32,15 @@ public class EnemySpawner : MonoBehaviour {
                 GameObject newGO = UnityEngine.Object.Instantiate(enemy) as GameObject;
                 newGO.name = String.Format("{0}-{1}", enemy.name, enemyCount++);
                 newGO.transform.parent = transform;
-                newGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(-0.2f, 0.2f),
-                                                            UnityEngine.Random.Range(-0.2f, 0.2f),
+                newGO.transform.localPosition = new Vector3(UnityEngine.Random.Range(randomXmin, randomXmax),
+                                                            UnityEngine.Random.Range(randomYmin, randomYmax),
                                                             0);
-                newGO.GetComponent<TargetFollower>().target = target;
+                if (newGO.GetComponent<TargetFollower>() != null) {
+                    newGO.GetComponent<TargetFollower>().target = target;
+                }
+                if (newGO.GetComponentInChildren<ArrowHandler>() != null) {
+                    newGO.GetComponentInChildren<ArrowHandler>().zAngle = zAngle - 90f;
+                }
                 t = 0;
                 enemies[enemyCount - 1] = newGO;
             }

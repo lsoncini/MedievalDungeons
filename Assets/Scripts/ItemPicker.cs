@@ -18,6 +18,13 @@ public class ItemPicker : MonoBehaviour {
             Destroy(collision.gameObject);
             mapsPicked++;
         }
+        TrapHandler trapHandler = collision.gameObject.GetComponent<TrapHandler>();
+        if(trapHandler != null) {
+            GetComponent<KeyboardMovement>().AlterSpeed(trapHandler.speed, trapHandler.time);
+            if (trapHandler.destroyOnCollision) {
+                Destroy(collision.gameObject);
+            }
+        }
     }
 
     public bool HasAllItemsNeeded() {
