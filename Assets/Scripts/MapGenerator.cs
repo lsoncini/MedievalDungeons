@@ -4,34 +4,46 @@ using System.Collections;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class MapGenerator : MonoBehaviour
-{
-	// The pieces of dungeon
-	public GameObject[] mapChunks;
-	public int mapSize = 10;
+public class MapGenerator : MonoBehaviour {
+    // The pieces of dungeon
+    public MapChunk[] mapChunks;
+    public int mapSize = 10;
     public Difficulty difficulty = Difficulty.Easy;
     public int seed;
 
-    private GameObject[,] map;
+    public GameObject keyPrefab;
+    public GameObject mapPrefab;
+    private int keyCount = 0;
+    private int mapCount = 0;
 
-    public void Generate()
-	{
-        UnityEngine.Random.seed = seed;
+    private int keyAmount;
+    private int mapAmount;
+    private int itemsAvailable;
 
-        map = new GameObject[mapSize, mapSize];
+    private MapChunk[,] map;
 
-        for(int i = 0; i < mapSize; i++) {
-            for(int j = 0; j < mapSize; j++) {
-                GameObject newGO = Instantiate(mapChunks[getRandomChunkIndex()]) as GameObject;
+    public void Generate() {
+        UnityEngine.Random.InitState(seed);
+
+        map = new MapChunk[mapSize, mapSize];
+        keyAmount = (mapSize * mapSize) / 5;
+        mapAmount = (mapSize * mapSize) / 10;
+        itemsAvailable = 0;
+        for (int i = 0; i < mapSize; i++) {
+            for (int j = 0; j < mapSize; j++) {
+                MapChunk newGO = Instantiate(mapChunks[getRandomChunkIndex()]);
                 newGO.name = String.Format("dungeon-{0}-{1}", i, j);
                 newGO.transform.parent = transform;
-                
+
                 newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
                 map[i, j] = newGO;
+                itemsAvailable += newGO.itemsAvailable();
             }
         }
-        
-        // generate the array
+
+        populateKeys();
+        populateMaps();
+
         // populate the array
         // check everything
         // render everything
@@ -40,11 +52,16 @@ public class MapGenerator : MonoBehaviour
 	}
 	
 	public void ClearMap() {
-        for (int i = 0; i < mapSize; i++) {
-            for(int j = 0; j < mapSize; j++) {
-                DestroyImmediate(map[i, j]);
-            }
-		}
+
+        MapChunk[] mc = gameObject.GetComponentsInChildren<MapChunk>();
+
+        for (int i = 0; i < mc.Length; i++) {
+            DestroyImmediate(mc[i].gameObject);
+        }
+        map = null;
+        keyCount = 0;
+        mapCount = 0;
+
     }
 	
 	private int prevIdx = 0;
@@ -55,4 +72,25 @@ public class MapGenerator : MonoBehaviour
 		
 		return prevIdx;
 	}
+
+    private void populateKeys() {
+        while(itemsAvailable > 0 && keyAmount - keyCount > 0) {
+            int randX = UnityEngine.Random.Range(0, mapSize);
+            int randY = UnityEngine.Random.Range(0, mapSize);
+            if (map[randX, randY].AddItemAtPoint(keyPrefab)) {
+                itemsAvailable--;
+                keyCount++;
+            }
+        }
+    }
+    private void populateMaps() {
+        while (itemsAvailable > 0 && mapAmount - mapCount > 0) {
+            int randX = UnityEngine.Random.Range(0, mapSize);
+            int randY = UnityEngine.Random.Range(0, mapSize);
+            if (map[randX, randY].AddItemAtPoint(mapPrefab)) {
+                itemsAvailable--;
+                mapCount++;
+            }
+        }
+    }
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MapChunkTriggers : MonoBehaviour {
 
-    public CameraManager cameraManager;
+    private CameraManager cameraManager;
 
+    private void Start() {
+        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
+    }
     private void OnTriggerExit2D(Collider2D collision) {
         foreach(EnemySpawner es in this.GetComponentsInChildren<EnemySpawner>()) {
             es.DestroyEnemies();
