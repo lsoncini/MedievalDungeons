@@ -5,6 +5,9 @@ using System;
 public class GameManager : MonoBehaviour {
 
     public static GameManager instance = null;
+    private CameraManager cameraManager;
+    public MapGenerator mapGenerator;
+    public GameObject skeleton;
     public int timeForLevel = 0;
 
     private bool isGameOn = true;
@@ -17,6 +20,7 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         levelsWon = 0;
+        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
         if (instance == null) {
             instance = this;
         } else if(instance != this) {
@@ -66,5 +70,9 @@ public class GameManager : MonoBehaviour {
         isGameOn = false;
         levelsWon++;
         nextLevelPanel.SetActive(true);
+    }
+
+    public void PanCameraToChunk() {
+        cameraManager.MoveTo(mapGenerator.GetChunkAt(skeleton.transform.position).transform.position);
     }
 }

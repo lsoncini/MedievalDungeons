@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Loader : MonoBehaviour {
-    public GameObject gameManager;
+    public GameManager gameManager;
+    public GameObject skeleton;
+    public MapGenerator mapGenerator;
     [SerializeField] private GameObject gameLostPanel;
     [SerializeField] private GameObject nextLevelPanel;
 
     private void Awake() {
         if (GameManager.instance == null) {
-            Instantiate(gameManager);
-            GameManager.instance.gameLostPanel = gameLostPanel;
-            GameManager.instance.nextLevelPanel = nextLevelPanel;
+            gameManager = Instantiate(gameManager);
+            gameManager.gameLostPanel = gameLostPanel;
+            gameManager.nextLevelPanel = nextLevelPanel;
+            gameManager.skeleton = skeleton;
+            gameManager.mapGenerator = mapGenerator;
         }
     }
 }

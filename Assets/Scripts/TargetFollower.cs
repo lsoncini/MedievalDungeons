@@ -5,7 +5,11 @@ using UnityEngine;
 public class TargetFollower : MonoBehaviour {
 
     public float moveSpeed = 0.1f;
-    public GameObject target;
+    private GameObject target;
+
+    private void Start() {
+        target = GameObject.Find("Skeleton");
+    }
     // Update is called once per frame
     void Update() {
         Vector3 dir = target.transform.position - this.transform.position;

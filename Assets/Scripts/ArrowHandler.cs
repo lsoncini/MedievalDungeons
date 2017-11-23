@@ -6,11 +6,9 @@ public class ArrowHandler : MonoBehaviour {
 
     public float speed = 2;
     private Vector3 initialPos;
-    public float zAngle = 0f;
 
 	// Use this for initialization
 	void Start () {
-        transform.rotation = Quaternion.Euler(0, 0, zAngle);
         initialPos = transform.position;
     }
 	
