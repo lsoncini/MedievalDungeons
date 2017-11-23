@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Loader : MonoBehaviour {
     public GameManager gameManager;
     public GameObject skeleton;
     public MapGenerator mapGenerator;
+
     [SerializeField] private GameObject gameLostPanel;
     [SerializeField] private GameObject nextLevelPanel;
 

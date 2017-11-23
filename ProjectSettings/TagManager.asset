@@ -7,7 +7,6 @@ TagManager:
   - Skeleton
   - Key
   - Map
-  - DungeonLight
   layers:
   - Default
   - TransparentFX

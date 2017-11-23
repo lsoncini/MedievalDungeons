@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
-
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class MapGenerator : MonoBehaviour {
+
     // The pieces of dungeon
     public MapChunk[] mapChunks;
     public int mapSize = 10;
@@ -14,9 +13,9 @@ public class MapGenerator : MonoBehaviour {
     public GameObject keyPrefab;
     public GameObject mapPrefab;
     public GameObject lightPrefab;
+
     private int keyCount = 0;
     private int mapCount = 0;
-
     private int keyAmount;
     private int mapAmount;
     private int itemsAvailable;
@@ -49,9 +48,7 @@ public class MapGenerator : MonoBehaviour {
         populateKeys();
         populateMaps();
         putLightsToMap();
-        // populate the array
         // check everything
-        // render everything
         print("MAP GENERATED!!");
 		
 	}

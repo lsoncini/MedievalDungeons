@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TargetFollower : MonoBehaviour {
 
@@ -10,11 +8,11 @@ public class TargetFollower : MonoBehaviour {
     private void Start() {
         target = GameObject.Find("Skeleton");
     }
-    // Update is called once per frame
+
     void Update() {
-        Vector3 dir = target.transform.position - this.transform.position;
+        Vector3 dir = target.transform.position - transform.position;
         transform.position += dir.normalized * Time.deltaTime * moveSpeed;
-        Quaternion rotation = Quaternion.LookRotation(this.transform.forward, dir.normalized);
+        Quaternion rotation = Quaternion.LookRotation(transform.forward, dir.normalized);
         transform.rotation = rotation;
     }
 }

@@ -32,7 +32,7 @@ public class KeyboardMovement : MonoBehaviour {
         if (movingDir.magnitude == 0)
             return;
 
-        this.SetRotation(movingDir);
+        SetRotation(movingDir);
         transform.Translate(new Vector3(0, -1, 0) * Time.deltaTime * speed);
     }
 
@@ -58,7 +58,7 @@ public class KeyboardMovement : MonoBehaviour {
             }
             rotationAngle = (int) movingDir.x * rotationAngle;
         }
-        this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotationAngle));
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, rotationAngle));
     }
 
     public void AlterSpeed(float speed, float time) {
