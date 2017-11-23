@@ -29,6 +29,14 @@ public class ItemPicker : MonoBehaviour {
         return (keysPicked >= keysNeeded) && (mapsPicked >= mapsNeeded);
     }
 
+    public int GetKeysPicked() {
+        return keysPicked;
+    }
+
+    public int GetMapsPicked() {
+        return mapsPicked;
+    }
+
     public void Reset() {
         keysPicked = 0;
         mapsPicked = 0;

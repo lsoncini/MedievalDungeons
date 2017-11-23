@@ -73,4 +73,8 @@ public class GameManager : MonoBehaviour {
     public void PanCameraToChunk() {
         cameraManager.MoveTo(mapGenerator.GetChunkAt(skeleton.transform.position).transform.position);
     }
+
+    public int GetTimeLeft() {
+        return timeLeft;
+    }
 }

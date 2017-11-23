@@ -6,7 +6,6 @@ public class MapChunk : MonoBehaviour
     private int itemCount = 0;
 
     public bool AddItemAtPoint(GameObject item) {
-        print(itemCount);
         if(itemCount >= itemPositions.Length) {
             return false;
         }

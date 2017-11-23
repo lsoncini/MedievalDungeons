@@ -23,12 +23,15 @@ public class MapGenerator : MonoBehaviour {
     private MapChunk[,] map;
 
     public void Start() {
+        ClearMap();
         Generate();
     }
 
     public void Generate() {
         UnityEngine.Random.InitState(seed);
-
+        if(map != null) {
+            ClearMap();
+        }
         map = new MapChunk[mapSize, mapSize];
         keyAmount = (mapSize * mapSize) / 5;
         mapAmount = (mapSize * mapSize) / 10;
@@ -114,7 +117,6 @@ public class MapGenerator : MonoBehaviour {
 
     public MapChunk GetChunkAt(Vector3 position) {
         if(map == null) {
-            print("map is null");
             return null;
         }
         int x, y;
