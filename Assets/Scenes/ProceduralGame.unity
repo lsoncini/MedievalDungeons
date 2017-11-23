@@ -136,12 +136,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapChunks:
-  - {fileID: 114675116535064098, guid: f2b545c2268fea24c8849ef5dfc10da4, type: 2}
+  - {fileID: 114503787146254944, guid: f2b545c2268fea24c8849ef5dfc10da4, type: 2}
   mapSize: 10
   difficulty: 0
   seed: 23425
   keyPrefab: {fileID: 1107418697430614, guid: 97cc03f0bfa081246a9d5edcc2963dd0, type: 2}
   mapPrefab: {fileID: 1775313338766350, guid: ce5915ba4aac3fd428563712c9cd9348, type: 2}
+  lightPrefab: {fileID: 1003580413634158, guid: bf72063316cdefa479640d832647948c,
+    type: 2}
 --- !u!4 &107605648
 Transform:
   m_ObjectHideFlags: 0
