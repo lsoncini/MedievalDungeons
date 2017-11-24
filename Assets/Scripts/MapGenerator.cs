@@ -6,7 +6,8 @@ public class MapGenerator : MonoBehaviour {
 
     // The pieces of dungeon
     public MapChunk[] mapChunks;
-    public int mapSize = 10;
+    private int mapSize = 5;
+    public DungeonSize dungeonSize = DungeonSize.Small;
     public Difficulty difficulty = Difficulty.Easy;
     public int seed;
 
@@ -31,6 +32,17 @@ public class MapGenerator : MonoBehaviour {
     public void Generate() {
         UnityEngine.Random.InitState(seed);
         ClearMap();
+        switch (dungeonSize) {
+            case DungeonSize.Small:
+                mapSize = 5;
+                break;
+            case DungeonSize.Normal:
+                mapSize = 7;
+                break;
+            case DungeonSize.Big:
+                mapSize = 10;
+                break;
+        }
         map = new MapChunk[mapSize, mapSize];
         if (keyAmount == -1) {
             keyAmount = (mapSize * mapSize) / 5;
