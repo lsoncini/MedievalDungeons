@@ -33,10 +33,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (!isGameOn) {
-            Time.timeScale = 0;
-        } else {
-            Time.timeScale = 1;
+        if (isGameOn) {
             t += Time.deltaTime;
             if (t >= 1) {
                 TakeTime(1);
@@ -49,10 +46,11 @@ public class GameManager : MonoBehaviour {
     }
 
     private void NewLevel() {
-        isGameOn = true;
         timeLeft = timeForLevel;
+        Time.timeScale = 1;
         mapGenerator.Generate();
         putPlayerAtRandomPosition();
+        isGameOn = true;
     }
 
     private void putPlayerAtRandomPosition() {
