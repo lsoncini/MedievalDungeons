@@ -24,6 +24,8 @@ public class MapGenerator : MonoBehaviour {
 
     private MapChunk[,] map;
 
+    private DungeonSkeletonChunk[,] skeleton;
+
     /*public void Start() {
         ClearMap();
         Generate();
@@ -44,15 +46,18 @@ public class MapGenerator : MonoBehaviour {
                 break;
         }
         map = new MapChunk[mapSize, mapSize];
+        skeleton = new DungeonSkeletonChunk[mapSize, mapSize];
         if (keyAmount == -1) {
             keyAmount = (mapSize * mapSize) / 5;
         }
         if(mapAmount == -1) {
             mapAmount = (mapSize * mapSize) / 10;
         }
+
         itemsAvailable = 0;
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
+                
                 MapChunk newGO = Instantiate(mapChunks[getRandomChunkIndex()]);
                 newGO.name = String.Format("dungeon-{0}-{1}", i, j);
                 newGO.transform.parent = transform;
