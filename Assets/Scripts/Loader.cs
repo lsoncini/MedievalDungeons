@@ -2,19 +2,19 @@
 
 public class Loader : MonoBehaviour {
     public GameManager gameManager;
-    public GameObject skeleton;
     public MapGenerator mapGenerator;
 
     [SerializeField] private GameObject gameLostPanel;
     [SerializeField] private GameObject nextLevelPanel;
+    [SerializeField] private GameObject itemMissingInfo;
 
     private void Awake() {
         if (GameManager.instance == null) {
-            gameManager = Instantiate(gameManager);
             gameManager.gameLostPanel = gameLostPanel;
             gameManager.nextLevelPanel = nextLevelPanel;
-            gameManager.skeleton = skeleton;
+            gameManager.itemMissingInfo = itemMissingInfo;
             gameManager.mapGenerator = mapGenerator;
+            gameManager = Instantiate(gameManager);
         }
     }
 }

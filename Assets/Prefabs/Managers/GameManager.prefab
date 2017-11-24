@@ -51,6 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75f08e779b7b9d4b8fb72dbbc984dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 0}
+  skeleton: {fileID: 0}
   timeForLevel: 120
   gameLostPanel: {fileID: 0}
   nextLevelPanel: {fileID: 0}
+  itemMissingInfo: {fileID: 0}

@@ -1505,7 +1505,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "Welcome to Medieval Dungeons,\ntry to last for as long as you can! To do
     so, \nyou have to collect keys to get to the next \ndungeon before you run out
-    of time. Be carefull, \ntraps and spiders may get in your way."
+    of time. Be careful, \ntraps and spiders may get in your way."
 --- !u!222 &1479173666
 CanvasRenderer:
   m_ObjectHideFlags: 0

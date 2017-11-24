@@ -13,28 +13,31 @@ public class MapGenerator : MonoBehaviour {
     public GameObject keyPrefab;
     public GameObject mapPrefab;
     public GameObject lightPrefab;
+    public GameObject doorPrefab;
 
     private int keyCount = 0;
     private int mapCount = 0;
-    private int keyAmount;
-    private int mapAmount;
+    public int keyAmount = -1;
+    public int mapAmount = -1;
     private int itemsAvailable;
 
     private MapChunk[,] map;
 
-    public void Start() {
+    /*public void Start() {
         ClearMap();
         Generate();
-    }
+    }*/
 
     public void Generate() {
         UnityEngine.Random.InitState(seed);
-        if(map != null) {
-            ClearMap();
-        }
+        ClearMap();
         map = new MapChunk[mapSize, mapSize];
-        keyAmount = (mapSize * mapSize) / 5;
-        mapAmount = (mapSize * mapSize) / 10;
+        if (keyAmount == -1) {
+            keyAmount = (mapSize * mapSize) / 5;
+        }
+        if(mapAmount == -1) {
+            mapAmount = (mapSize * mapSize) / 10;
+        }
         itemsAvailable = 0;
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
@@ -51,12 +54,50 @@ public class MapGenerator : MonoBehaviour {
         populateKeys();
         populateMaps();
         putLightsToMap();
+        putDoorInRandomChunk();
         // check everything
         print("MAP GENERATED!!");
 		
 	}
-	
-	public void ClearMap() {
+
+    private void putDoorInRandomChunk() {
+        MapChunk randomMapChunk;
+        float zAngle = 0f;
+        Vector3 localPosition = new Vector3(0, 0, 0);
+
+        int totalBorderChunks = (mapSize == 1) ? 1 : mapSize * 4 - 4;
+        int randomChunk = UnityEngine.Random.Range(0, totalBorderChunks);
+
+        if (randomChunk < mapSize) {                                    // LEFT BORDER
+            randomMapChunk = map[0, randomChunk];
+            zAngle = 0;
+            localPosition.x = -1.47f;
+            localPosition.y = 0;
+        } else if(randomChunk < mapSize * 2) {                          // RIGHT BORDER
+            randomMapChunk = map[mapSize - 1, randomChunk - mapSize];
+            zAngle = 180;
+            localPosition.x = 1.47f;
+            localPosition.y = 0;
+        } else if(randomChunk < mapSize * 3 - 2) {                      // BOTTOM BORDER
+            randomMapChunk = map[randomChunk - 2 * mapSize, 0];
+            zAngle = 90;
+            localPosition.x = 0;
+            localPosition.y = -1.47f;
+        } else {                                                        // TOP BORDER
+            randomMapChunk = map[randomChunk - (mapSize * 3 - 2), mapSize - 1];
+            zAngle = -90;
+            localPosition.x = 0;
+            localPosition.y = 1.47f;
+        }
+
+        GameObject newGO = Instantiate(doorPrefab);
+        newGO.name = String.Format("exit");
+        newGO.transform.parent = randomMapChunk.transform;
+        newGO.transform.localPosition = localPosition;
+        newGO.transform.Rotate(0, 0, zAngle);
+    }
+
+    public void ClearMap() {
 
         MapChunk[] mc = gameObject.GetComponentsInChildren<MapChunk>();
         for (int i = 0; i < mc.Length; i++) {
@@ -69,7 +110,6 @@ public class MapGenerator : MonoBehaviour {
         map = null;
         keyCount = 0;
         mapCount = 0;
-
     }
 	
 	private int prevIdx = 0;
@@ -135,5 +175,13 @@ public class MapGenerator : MonoBehaviour {
         y = (int) Math.Floor((position.y + 1.5f) / 3);
 
         return true;
+    }
+
+    public Vector3 GetRandomPlayerPositionInMap() {
+        int randX = UnityEngine.Random.Range(0, mapSize);
+        int randY = UnityEngine.Random.Range(0, mapSize);
+        return new Vector3(randX * 3,
+                           randY * 3,
+                           0);
     }
 }

@@ -15,32 +15,51 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] public GameObject gameLostPanel;
     [SerializeField] public GameObject nextLevelPanel;
+    [SerializeField] public GameObject itemMissingInfo;
 
     private void Awake() {
         levelsWon = 0;
         cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
+        skeleton = GameObject.Find("Skeleton");
         if (instance == null) {
             instance = this;
         } else if(instance != this) {
             Destroy(gameObject);
         }
+    }
+
+    private void Start() {
         NewLevel();
     }
 
     private void Update() {
-        t += Time.deltaTime;
-        if (t >= 1) {
-            TakeTime(1);
-            t = 0;
-        }
-        if(timeLeft <= 0) {
-            GameLost();
+        if (!isGameOn) {
+            Time.timeScale = 0;
+        } else {
+            Time.timeScale = 1;
+            t += Time.deltaTime;
+            if (t >= 1) {
+                TakeTime(1);
+                t = 0;
+            }
+            if (timeLeft <= 0) {
+                GameLost();
+            }
         }
     }
 
     private void NewLevel() {
         isGameOn = true;
         timeLeft = timeForLevel;
+        mapGenerator.Generate();
+        putPlayerAtRandomPosition();
+    }
+
+    private void putPlayerAtRandomPosition() {
+        Vector3 randomPos = mapGenerator.GetRandomPlayerPositionInMap();
+        print(randomPos);
+        skeleton.transform.position = randomPos;
+        PanCameraToChunk();
     }
 
     public void AddTime(int timeToAdd) {
@@ -71,7 +90,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public void PanCameraToChunk() {
-        cameraManager.MoveTo(mapGenerator.GetChunkAt(skeleton.transform.position).transform.position);
+        MapChunk currentChunk = mapGenerator.GetChunkAt(skeleton.transform.position);
+        if(currentChunk != null) {
+            cameraManager.MoveTo(currentChunk.transform.position);
+        }
     }
 
     public int GetTimeLeft() {
