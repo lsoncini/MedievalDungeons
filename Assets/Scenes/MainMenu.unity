@@ -490,6 +490,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 462394164}
+--- !u!1001 &507397428
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421804207413576, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 97bc3d94dbb41744a8664ce2df931d85, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &605637171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1650,48 +1692,28 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1036325146}
---- !u!1 &1044940604
+--- !u!114 &1044940605 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114877232566498274, guid: 97bc3d94dbb41744a8664ce2df931d85,
+    type: 2}
+  m_PrefabInternal: {fileID: 507397428}
+  m_Script: {fileID: 11500000, guid: 4ff7837d97efb7842a56172ec3496087, type: 3}
+--- !u!1 &1080852067 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1044940606}
-  - component: {fileID: 1044940605}
-  m_Layer: 0
-  m_Name: MenuData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1044940605
+  m_PrefabParentObject: {fileID: 1755659790820848, guid: fdd035b80530a3e42a170dba3e583584,
+    type: 2}
+  m_PrefabInternal: {fileID: 1809704228}
+--- !u!114 &1080852068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1044940604}
+  m_GameObject: {fileID: 1080852067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ff7837d97efb7842a56172ec3496087, type: 3}
+  m_Script: {fileID: 11500000, guid: cd3fbb62f47c424449f2ab03b3215354, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
-  dungeonSize: 0
---- !u!4 &1044940606
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1044940604}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: -5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082039253
 GameObject:
   m_ObjectHideFlags: 0
@@ -3736,6 +3758,10 @@ Prefab:
         type: 2}
       propertyPath: spreadCustomCurve.m_RotationOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755659790820848, guid: fdd035b80530a3e42a170dba3e583584, type: 2}
+      propertyPath: m_Name
+      value: MenuBackgroundMusic
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fdd035b80530a3e42a170dba3e583584, type: 2}

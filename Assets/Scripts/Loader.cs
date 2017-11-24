@@ -11,8 +11,13 @@ public class Loader : MonoBehaviour {
 
     private void Awake() {
         if (GameManager.instance == null) {
-            menuData = GameObject.Find("MenuData").GetComponent<MenuData>();
-            if(menuData != null) {
+            GameObject menuMusic = GameObject.Find("MenuBackgroundMusic");
+            if(menuMusic != null) {
+                menuMusic.GetComponent<MusicController>().FadeOut();
+            }
+            GameObject data = GameObject.Find("MenuData");
+            if(data != null) {
+                menuData = data.GetComponent<MenuData>();
                 mapGenerator.difficulty = menuData.difficulty;
                 mapGenerator.dungeonSize = menuData.dungeonSize;
             }

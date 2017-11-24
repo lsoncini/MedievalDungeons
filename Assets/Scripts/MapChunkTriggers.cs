@@ -8,7 +8,7 @@ public class MapChunkTriggers : MonoBehaviour {
         gameManager = GameManager.instance;
     }
     private void OnTriggerExit2D(Collider2D collision) {
-        foreach(EnemySpawner es in this.GetComponentsInChildren<EnemySpawner>()) {
+        foreach(EnemySpawner es in GetComponentsInChildren<EnemySpawner>()) {
             es.DestroyEnemies();
         }
         gameManager.PanCameraToChunk();

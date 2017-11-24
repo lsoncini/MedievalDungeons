@@ -3,14 +3,13 @@
 public class PauseManager : MonoBehaviour {
     [SerializeField] private GameObject pausePanel;
 
-    private GameManager manager;
+    private GameManager gameManager;
 
     private void Start() {
-        manager = GameManager.instance;
+        gameManager = GameManager.instance;
     }
-
     void Update() {
-        if (manager.IsGameOn()) {
+        if (gameManager.IsGameOn()) {
             if (Input.GetKeyDown(KeyCode.P)) {
                 if (!pausePanel.activeInHierarchy) {
                     PauseGame();

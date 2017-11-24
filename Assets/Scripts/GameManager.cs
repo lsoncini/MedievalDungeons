@@ -18,9 +18,6 @@ public class GameManager : MonoBehaviour {
     [SerializeField] public GameObject itemMissingInfo;
 
     private void Awake() {
-        levelsWon = 0;
-        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
-        skeleton = GameObject.Find("Skeleton");
         if (instance == null) {
             instance = this;
         } else if(instance != this) {
@@ -29,6 +26,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
+        levelsWon = 0;
+        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
+        skeleton = GameObject.Find("Skeleton");
         NewLevel();
     }
 
