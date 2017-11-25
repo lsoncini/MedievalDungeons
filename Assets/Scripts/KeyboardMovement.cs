@@ -64,6 +64,10 @@ public class KeyboardMovement : MonoBehaviour {
     public void AlterSpeed(float speed, float time) {
         this.speed = speed;
         t = time;
-        GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0.4f);
+        if(speed < defaultSpeed) {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0.4f);
+        } else {
+            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 0.7f);
+        }
     }
 }

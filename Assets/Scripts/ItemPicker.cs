@@ -7,14 +7,22 @@ public class ItemPicker : MonoBehaviour {
     public int keysNeeded = 3;
     public int mapsNeeded = 0;
 
+    private AudioSource audioSource;
+
+    private void Start() {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Key")) {
             Destroy(collision.gameObject);
             keysPicked++;
+            audioSource.Play();
         }
         if (collision.gameObject.CompareTag("Map")) {
             Destroy(collision.gameObject);
             mapsPicked++;
+            audioSource.Play();
         }
         TrapHandler trapHandler = collision.gameObject.GetComponent<TrapHandler>();
         if(trapHandler != null) {
