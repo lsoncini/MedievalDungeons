@@ -13,13 +13,17 @@ public class MapGenerator : MonoBehaviour {
 
     public GameObject keyPrefab;
     public GameObject mapPrefab;
+    public GameObject speedupPrefab;
+
     public GameObject lightPrefab;
     public GameObject doorPrefab;
 
     private int keyCount = 0;
     private int mapCount = 0;
+    private int speedupCount = 0;
     public int keyAmount = -1;
     public int mapAmount = -1;
+    public int speedupAmount = -1;
     private int itemsAvailable;
 
     private MapChunk[,] map;
@@ -50,8 +54,11 @@ public class MapGenerator : MonoBehaviour {
         if (keyAmount == -1) {
             keyAmount = (mapSize * mapSize) / 5;
         }
-        if(mapAmount == -1) {
+        if (mapAmount == -1) {
             mapAmount = (mapSize * mapSize) / 10;
+        }
+        if (speedupAmount == -1) {
+            speedupAmount = (mapSize * mapSize) / 10;
         }
 
         itemsAvailable = 0;
@@ -70,6 +77,7 @@ public class MapGenerator : MonoBehaviour {
 
         populateKeys();
         populateMaps();
+        populateSpeedups();
         putLightsToMap();
         putDoorInRandomChunk();
         // check everything
@@ -158,6 +166,16 @@ public class MapGenerator : MonoBehaviour {
             }
         }
     }
+    private void populateSpeedups() {
+        while (itemsAvailable > 0 && speedupAmount - speedupCount > 0) {
+            int randX = UnityEngine.Random.Range(0, mapSize);
+            int randY = UnityEngine.Random.Range(0, mapSize);
+            if (map[randX, randY].AddItemAtPoint(speedupPrefab)) {
+                itemsAvailable--;
+                speedupCount++;
+            }
+        }
+    }
 
     private void putLightsToMap() {
         int counter = 0;
@@ -200,5 +218,17 @@ public class MapGenerator : MonoBehaviour {
         return new Vector3(randX * 3,
                            randY * 3,
                            0);
+    }
+
+    public int GetKeyCount() {
+        return keyCount;
+    }
+
+    public int GetMapCount() {
+        return mapCount;
+    }
+
+    public int GetSpeedupCount() {
+        return speedupCount;
     }
 }
