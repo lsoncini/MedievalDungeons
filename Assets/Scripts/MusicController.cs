@@ -6,6 +6,7 @@ public class MusicController : MonoBehaviour {
     private AudioSource audioSource;
     private bool isFadingOut = false;
     private float time;
+    private int count = 0;
 
 	void Start () {
         DontDestroyOnLoad(this);
@@ -17,10 +18,11 @@ public class MusicController : MonoBehaviour {
         if (isFadingOut) {
             time += Time.deltaTime;
             if(time >= 1) {
+                count++;
                 time = 0;
-                audioSource.volume -= totalVolume / 3;
-                if(audioSource.volume <= 0) {
-                    Destroy(this);
+                audioSource.volume /= 3;
+                if(count == 2) {
+                    Destroy(gameObject);
                 }
             }
         }
@@ -28,5 +30,6 @@ public class MusicController : MonoBehaviour {
 
     public void FadeOut() {
         isFadingOut = true;
+        count = 0;
     }
 }

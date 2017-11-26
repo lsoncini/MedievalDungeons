@@ -27,8 +27,6 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         levelsWon = 0;
-        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
-        skeleton = GameObject.Find("Skeleton");
         NewLevel();
     }
 
@@ -45,9 +43,16 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void NewLevel() {
+    public void NewLevel() {
+        cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
+        skeleton = GameObject.Find("Skeleton");
+        ItemPicker ip = skeleton.GetComponent<ItemPicker>();
+        if(ip != null) {
+            ip.Reset();
+        }
         timeLeft = timeForLevel;
         Time.timeScale = 1;
+        mapGenerator.seed += 1;
         mapGenerator.Generate();
         putPlayerAtRandomPosition();
         isGameOn = true;
@@ -77,11 +82,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public void GameLost() {
+        Time.timeScale = 0;
         isGameOn = false;
         gameLostPanel.SetActive(true);
     }
 
     public void LevelWon() {
+        Time.timeScale = 0;
         isGameOn = false;
         levelsWon++;
         nextLevelPanel.SetActive(true);

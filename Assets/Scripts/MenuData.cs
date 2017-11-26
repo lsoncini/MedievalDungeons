@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuData : MonoBehaviour {
 
     public Difficulty difficulty = Difficulty.Easy;
     public DungeonSize dungeonSize = DungeonSize.Small;
+    public int seedValue = 12345;
+    public InputController input;
 
     void Start() {
         DontDestroyOnLoad(this);
@@ -15,5 +18,9 @@ public class MenuData : MonoBehaviour {
 
     public void SetDungeonSize(int dungeonSize) {
         this.dungeonSize = (DungeonSize)dungeonSize;
+    }
+
+    public void SetSeedValue() {
+        this.seedValue = input.getValue();
     }
 }
