@@ -2,7 +2,6 @@
 
 public class MusicController : MonoBehaviour {
 
-    private float totalVolume;
     private AudioSource audioSource;
     private bool isFadingOut = false;
     private float time;
@@ -11,7 +10,6 @@ public class MusicController : MonoBehaviour {
 	void Start () {
         DontDestroyOnLoad(this);
         audioSource = GetComponent<AudioSource>();
-        totalVolume = audioSource.volume;
 	}
 
     private void Update() {

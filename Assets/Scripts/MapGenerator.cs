@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -6,6 +7,14 @@ public class MapGenerator : MonoBehaviour {
 
     // The pieces of dungeon
     public MapChunk[] mapChunks;
+
+    public MapChunk[] fourDoorsChunks;
+    public MapChunk[] threeDoorsChunks;
+    public MapChunk[] oneDoorChunks;
+    public MapChunk[] oppositeDoorChunks;
+    public MapChunk[] sideDoorChunks;
+
+
     private int mapSize = 5;
     public DungeonSize dungeonSize = DungeonSize.Small;
     public Difficulty difficulty = Difficulty.Easy;
@@ -49,8 +58,7 @@ public class MapGenerator : MonoBehaviour {
                 mapSize = 10;
                 break;
         }
-        map = new MapChunk[mapSize, mapSize];
-        skeleton = new DungeonSkeletonChunk[mapSize, mapSize];
+
         if (keyAmount == -1) {
             keyAmount = (mapSize * mapSize) / 5;
         }
@@ -61,11 +69,128 @@ public class MapGenerator : MonoBehaviour {
             speedupAmount = (mapSize * mapSize) / 10;
         }
 
+        map = new MapChunk[mapSize, mapSize];
+        skeleton = new DungeonSkeletonChunk[mapSize, mapSize];
+
+        buildDungeonSkeleton();
+        renderDungeonSkeleton();
+
+        populateKeys();
+        populateMaps();
+        populateSpeedups();
+
+        putLightsToMap();
+
+        putDoorInRandomChunk();
+
+        print("MAP GENERATED!!");
+	}
+
+
+    private void buildDungeonSkeleton() {
+        List<DungeonSkeletonChunk> frontier = new List<DungeonSkeletonChunk>();
+        int chunkCount = 0;
+
+        while(chunkCount < mapSize * mapSize) {
+            if(chunkCount == 0) {
+                skeleton[0, 0] = new DungeonSkeletonChunk(new bool[] { false, false, false, false }, new bool[] { false, false, true, true }, 0, 0);
+                frontier.Add(skeleton[0, 0]);
+                chunkCount++;
+            } else {
+                for(int i = 0; i < mapSize; i++) {
+                    for(int j = 0; j < mapSize; j++) {
+                        if(skeleton[i,j] == null) {
+                            if(i - 1 >= 0 && skeleton[i - 1, j] != null) {
+                                skeleton[i - 1, j].doors[0] = true;
+                            } else if(j - 1 >= 0 && skeleton[i, j - 1] != null) {
+                                skeleton[i, j - 1].doors[1] = true;
+                            } else if (i + 1 < mapSize && skeleton[i + 1, j] != null) {
+                                skeleton[i + 1, j].doors[2] = true;
+                            } else if (j + 1 < mapSize && skeleton[i, j + 1] != null) {
+                                skeleton[i, j + 1].doors[3] = true;
+                            }
+                            frontier.Add(createSkeletonChunk(i, j));
+                            chunkCount++;
+                        }
+                    }
+                }
+            }
+
+            while (frontier.Count > 0) {
+                DungeonSkeletonChunk chunk = frontier[0];
+                frontier.RemoveAt(0);
+                int x, y;
+                for (int i = 0; i < 4; i++) {
+                    if (chunk.doors[i]) {
+                        switch (i) {
+                            case 0:
+                                x = chunk.x + 1;
+                                y = chunk.y;
+                                break;
+                            case 1:
+                                x = chunk.x;
+                                y = chunk.y + 1;
+                                break;
+                            case 2:
+                                x = chunk.x - 1;
+                                y = chunk.y;
+                                break;
+                            default:
+                                x = chunk.x;
+                                y = chunk.y - 1;
+                                break;
+                        }
+                        if (skeleton[x, y] == null) {
+                            frontier.Add(createSkeletonChunk(x, y));
+                            chunkCount++;
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+
+    private void renderDungeonSkeleton() {
+        itemsAvailable = 0;
+
+        for (int i = 0; i < mapSize; i++) {
+            for (int j = 0; j < mapSize; j++) {
+                DungeonSkeletonChunk skeletonChunk = skeleton[i, j];
+                MapChunk current;
+                switch (skeletonChunk.getSkeletonType()) {
+                    case ChunkType.FourDoors:
+                        current = getRandomChunk(fourDoorsChunks);
+                        break;
+                    case ChunkType.ThreeDoors:
+                        current = getRandomChunk(threeDoorsChunks);
+                        break;
+                    case ChunkType.OneDoor:
+                        current = getRandomChunk(oneDoorChunks);
+                        break;
+                    case ChunkType.OppositeDoors:
+                        current = getRandomChunk(oppositeDoorChunks);
+                        break;
+                    default:
+                        current = getRandomChunk(sideDoorChunks);
+                        break;
+                }
+
+                MapChunk newGO = Instantiate(current);
+                newGO.name = String.Format("dungeon-{0}-{1}", i, j);
+                newGO.transform.parent = transform;
+                newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
+                map[i, j] = newGO;
+                itemsAvailable += newGO.itemsAvailable();
+            }
+        }
+    }
+
+    private void renderDungeon() {
         itemsAvailable = 0;
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                
-                MapChunk newGO = Instantiate(mapChunks[getRandomChunkIndex()]);
+                MapChunk newGO = Instantiate(getRandomChunk(mapChunks));
                 newGO.name = String.Format("dungeon-{0}-{1}", i, j);
                 newGO.transform.parent = transform;
 
@@ -74,16 +199,67 @@ public class MapGenerator : MonoBehaviour {
                 itemsAvailable += newGO.itemsAvailable();
             }
         }
+    }
 
-        populateKeys();
-        populateMaps();
-        populateSpeedups();
-        putLightsToMap();
-        putDoorInRandomChunk();
-        // check everything
-        print("MAP GENERATED!!");
-		
-	}
+    private DungeonSkeletonChunk createSkeletonChunk(int x, int y) {
+        bool[] doorsNeeded = { false, false, false, false };
+        bool[] doorsNotAllowed = { false, false, false, false };
+        DungeonSkeletonChunk neighbour;
+        if(x + 1 >= mapSize) {
+            doorsNotAllowed[0] = true;
+        } else {
+            neighbour = skeleton[x + 1, y];
+            if (neighbour != null) {
+                if (neighbour.doors[2]) {
+                    doorsNeeded[0] = true;
+                } else {
+                    doorsNotAllowed[0] = true;
+                }
+            }
+        }
+
+        if (y + 1 >= mapSize) {
+            doorsNotAllowed[1] = true;
+        } else {
+            neighbour = skeleton[x, y + 1];
+            if (neighbour != null) {
+                if (neighbour.doors[3]) {
+                    doorsNeeded[1] = true;
+                } else {
+                    doorsNotAllowed[1] = true;
+                }
+            }
+        }
+
+        if (x - 1 < 0) {
+            doorsNotAllowed[2] = true;
+        } else {
+            neighbour = skeleton[x - 1, y];
+            if (neighbour != null) {
+                if (neighbour.doors[0]) {
+                    doorsNeeded[2] = true;
+                } else {
+                    doorsNotAllowed[2] = true;
+                }
+            }
+        }
+
+        if (y - 1 < 0) {
+            doorsNotAllowed[3] = true;
+        } else {
+            neighbour = skeleton[x, y - 1];
+            if (neighbour != null) {
+                if (neighbour.doors[1]) {
+                    doorsNeeded[3] = true;
+                } else {
+                    doorsNotAllowed[3] = true;
+                }
+            }
+        }
+
+        skeleton[x, y] = new DungeonSkeletonChunk(doorsNeeded, doorsNotAllowed, x, y);
+        return skeleton[x, y];
+    }
 
     private void putDoorInRandomChunk() {
         MapChunk randomMapChunk;
@@ -137,13 +313,12 @@ public class MapGenerator : MonoBehaviour {
         mapCount = 0;
     }
 	
-	private int prevIdx = 0;
-	private int getRandomChunkIndex()
+	private MapChunk getRandomChunk(MapChunk[] mapChunks)
 	{
-		// checkear condiciones aca...
-		prevIdx = UnityEngine.Random.Range(0, mapChunks.Length);
+        // checkear condiciones aca...
+        int idx = UnityEngine.Random.Range(0, mapChunks.Length);
 		
-		return prevIdx;
+		return mapChunks[idx];
 	}
 
     private void populateKeys() {
@@ -215,9 +390,7 @@ public class MapGenerator : MonoBehaviour {
     public Vector3 GetRandomPlayerPositionInMap() {
         int randX = UnityEngine.Random.Range(0, mapSize);
         int randY = UnityEngine.Random.Range(0, mapSize);
-        return new Vector3(randX * 3,
-                           randY * 3,
-                           0);
+        return new Vector3(randX * 3, randY * 3, 0);
     }
 
     public int GetKeyCount() {
