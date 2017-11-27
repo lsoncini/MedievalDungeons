@@ -180,6 +180,7 @@ public class MapGenerator : MonoBehaviour {
                 newGO.name = String.Format("dungeon-{0}-{1}", i, j);
                 newGO.transform.parent = transform;
                 newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
+                newGO.RotateToMatch(skeletonChunk.doors);
                 map[i, j] = newGO;
                 itemsAvailable += newGO.itemsAvailable();
             }

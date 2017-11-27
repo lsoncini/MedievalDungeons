@@ -737,7 +737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPositions:
   - {x: 0, y: 0}
-  topDoor: 0
+  topDoor: 1
   bottomDoor: 0
   leftDoor: 0
   rightDoor: 0

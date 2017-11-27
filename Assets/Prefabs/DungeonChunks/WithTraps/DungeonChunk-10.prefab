@@ -1926,7 +1926,7 @@ MonoBehaviour:
   - {x: 1, y: -1}
   - {x: -1, y: -1}
   - {x: 0, y: 0}
-  topDoor: 0
+  topDoor: 1
   bottomDoor: 0
   leftDoor: 0
   rightDoor: 0

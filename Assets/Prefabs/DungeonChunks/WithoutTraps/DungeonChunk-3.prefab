@@ -812,8 +812,8 @@ MonoBehaviour:
   itemPositions: []
   topDoor: 0
   bottomDoor: 0
-  leftDoor: 0
-  rightDoor: 0
+  leftDoor: 1
+  rightDoor: 1
 --- !u!114 &114473164313365804
 MonoBehaviour:
   m_ObjectHideFlags: 1

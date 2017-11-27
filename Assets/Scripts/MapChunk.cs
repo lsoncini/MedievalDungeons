@@ -42,7 +42,7 @@ public class MapChunk : MonoBehaviour
     private bool hasDoor(int doorNum) {  //RIGHT = 0, TOP = 1, LEFT = 2, BOTTOM = 3
         bool[] doors = { rightDoor, topDoor, leftDoor, bottomDoor };
 
-        doorNum += getRotation();
+        doorNum = doorNum + 4 - getRotation();
         doorNum = doorNum % 4;
         return doors[doorNum];
     }
@@ -50,8 +50,27 @@ public class MapChunk : MonoBehaviour
     private int getRotation() {
         float zRotation = this.gameObject.transform.eulerAngles.z;
         if (zRotation < 0) {
-            zRotation *= -1;
+            zRotation += 360;
         }
-        return ((int)zRotation)% 90;
+        return (((int)zRotation) / 90) % 4;
+    }
+
+    private bool allDoorsMatch(bool[] doors) {
+        for(int i = 0; i < 4; i++) {
+            if (doors[i] != hasDoor(i))
+                return false;
+        }
+        return true;
+    }
+    public void RotateToMatch(bool[] doors) {
+        int safetyCutCondition = 0;
+        while ((!allDoorsMatch(doors)) && safetyCutCondition < 4) {
+            print("DOORS TO MATCH");
+            foreach(bool b in doors) { print(b); };
+            print("THIS CHUNK DOORS");
+            foreach (bool b in new bool[] { hasRightDoor(), hasTopDoor(), hasLeftDoor(), hasBottomDoor() }) { print(b); };
+            gameObject.transform.Rotate(0, 0, 90);
+            safetyCutCondition++;
+        }
     }
 }
