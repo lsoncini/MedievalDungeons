@@ -156,35 +156,39 @@ public class MapGenerator : MonoBehaviour {
 
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                DungeonSkeletonChunk skeletonChunk = skeleton[i, j];
-                MapChunk current;
-                switch (skeletonChunk.getSkeletonType()) {
-                    case ChunkType.FourDoors:
-                        current = getRandomChunk(fourDoorsChunks);
-                        break;
-                    case ChunkType.ThreeDoors:
-                        current = getRandomChunk(threeDoorsChunks);
-                        break;
-                    case ChunkType.OneDoor:
-                        current = getRandomChunk(oneDoorChunks);
-                        break;
-                    case ChunkType.OppositeDoors:
-                        current = getRandomChunk(oppositeDoorChunks);
-                        break;
-                    default:
-                        current = getRandomChunk(sideDoorChunks);
-                        break;
-                }
-
-                MapChunk newGO = Instantiate(current);
-                newGO.name = String.Format("dungeon-{0}-{1}", i, j);
-                newGO.transform.parent = transform;
-                newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
-                newGO.RotateToMatch(skeletonChunk.doors);
-                map[i, j] = newGO;
-                itemsAvailable += newGO.itemsAvailable();
+                renderSkeletonChunk(i, j);
             }
         }
+    }
+
+    private void renderSkeletonChunk(int i, int j) {
+        DungeonSkeletonChunk skeletonChunk = skeleton[i, j];
+        MapChunk current;
+        switch (skeletonChunk.getSkeletonType()) {
+            case ChunkType.FourDoors:
+                current = getRandomChunk(fourDoorsChunks);
+                break;
+            case ChunkType.ThreeDoors:
+                current = getRandomChunk(threeDoorsChunks);
+                break;
+            case ChunkType.OneDoor:
+                current = getRandomChunk(oneDoorChunks);
+                break;
+            case ChunkType.OppositeDoors:
+                current = getRandomChunk(oppositeDoorChunks);
+                break;
+            default:
+                current = getRandomChunk(sideDoorChunks);
+                break;
+        }
+
+        MapChunk newGO = Instantiate(current);
+        newGO.name = String.Format("dungeon-{0}-{1}", i, j);
+        newGO.transform.parent = transform;
+        newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
+        newGO.RotateToMatch(skeletonChunk.doors);
+        map[i, j] = newGO;
+        itemsAvailable += newGO.itemsAvailable();
     }
 
     private void renderDungeon() {
@@ -269,33 +273,46 @@ public class MapGenerator : MonoBehaviour {
 
         int totalBorderChunks = (mapSize == 1) ? 1 : mapSize * 4 - 4;
         int randomChunk = UnityEngine.Random.Range(0, totalBorderChunks);
-
-        if (randomChunk < mapSize) {                                    // LEFT BORDER
-            randomMapChunk = map[0, randomChunk];
+        int x, y, i;
+        if (randomChunk < mapSize) {                                   // LEFT BORDER
+            x = 0;
+            y = randomChunk;
+            i = 2;
             zAngle = 0;
             localPosition.x = -1.47f;
             localPosition.y = 0;
         } else if(randomChunk < mapSize * 2) {                          // RIGHT BORDER
-            randomMapChunk = map[mapSize - 1, randomChunk - mapSize];
+            x = mapSize - 1;
+            y = randomChunk - mapSize;
+            i = 0;
             zAngle = 180;
             localPosition.x = 1.47f;
             localPosition.y = 0;
         } else if(randomChunk < mapSize * 3 - 2) {                      // BOTTOM BORDER
-            randomMapChunk = map[randomChunk - 2 * mapSize, 0];
+            x = randomChunk - 2 * mapSize;
+            y = 0;
+            i = 3;
             zAngle = 90;
             localPosition.x = 0;
             localPosition.y = -1.47f;
         } else {                                                        // TOP BORDER
-            randomMapChunk = map[randomChunk - (mapSize * 3 - 2), mapSize - 1];
+            x = randomChunk - (mapSize * 3 - 2);
+            y = mapSize - 1;
+            i = 1;
             zAngle = -90;
             localPosition.x = 0;
             localPosition.y = 1.47f;
         }
 
+        skeleton[x, y].doors[i] = true;
+        DestroyImmediate(map[x, y].gameObject);
+        renderSkeletonChunk(x, y);
+        randomMapChunk = map[x,y];
+
         GameObject newGO = Instantiate(doorPrefab);
         newGO.name = String.Format("exit");
         newGO.transform.parent = randomMapChunk.transform;
-        newGO.transform.localPosition = localPosition;
+        newGO.transform.position = randomMapChunk.transform.position + localPosition;
         newGO.transform.Rotate(0, 0, zAngle);
     }
 
@@ -316,7 +333,6 @@ public class MapGenerator : MonoBehaviour {
 	
 	private MapChunk getRandomChunk(MapChunk[] mapChunks)
 	{
-        // checkear condiciones aca...
         int idx = UnityEngine.Random.Range(0, mapChunks.Length);
 		
 		return mapChunks[idx];
