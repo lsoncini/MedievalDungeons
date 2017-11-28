@@ -24,6 +24,7 @@ public class Loader : MonoBehaviour {
                 mapGenerator.difficulty = menuData.difficulty;
                 mapGenerator.dungeonSize = menuData.dungeonSize;
                 mapGenerator.seed = menuData.seedValue;
+                Destroy(menuData.gameObject);
             }
             gameManager.gameLostPanel = gameLostPanel;
             gameManager.nextLevelPanel = nextLevelPanel;
