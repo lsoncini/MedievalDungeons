@@ -9,6 +9,8 @@ public class MapChunk : MonoBehaviour
     public bool leftDoor;
     public bool rightDoor;
 
+    public bool isTrap;
+
     public bool AddItemAtPoint(GameObject item) {
         if(itemCount >= itemPositions.Length) {
             return false;
@@ -65,10 +67,6 @@ public class MapChunk : MonoBehaviour
     public void RotateToMatch(bool[] doors) {
         int safetyCutCondition = 0;
         while ((!allDoorsMatch(doors)) && safetyCutCondition < 4) {
-            print("DOORS TO MATCH");
-            foreach(bool b in doors) { print(b); };
-            print("THIS CHUNK DOORS");
-            foreach (bool b in new bool[] { hasRightDoor(), hasTopDoor(), hasLeftDoor(), hasBottomDoor() }) { print(b); };
             gameObject.transform.Rotate(0, 0, 90);
             safetyCutCondition++;
         }

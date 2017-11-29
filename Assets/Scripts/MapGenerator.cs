@@ -14,8 +14,8 @@ public class MapGenerator : MonoBehaviour {
     public MapChunk[] oppositeDoorChunks;
     public MapChunk[] sideDoorChunks;
 
-
     private int mapSize = 5;
+    private float trapPercentage = 0.3f;
     public DungeonSize dungeonSize = DungeonSize.Small;
     public Difficulty difficulty = Difficulty.Easy;
     public int seed;
@@ -34,15 +34,11 @@ public class MapGenerator : MonoBehaviour {
     public int mapAmount = -1;
     public int speedupAmount = -1;
     private int itemsAvailable;
+    private int trapCount = 0;
 
     private MapChunk[,] map;
 
     private DungeonSkeletonChunk[,] skeleton;
-
-    /*public void Start() {
-        ClearMap();
-        Generate();
-    }*/
 
     public void Generate() {
         UnityEngine.Random.InitState(seed);
@@ -56,6 +52,17 @@ public class MapGenerator : MonoBehaviour {
                 break;
             case DungeonSize.Big:
                 mapSize = 10;
+                break;
+        }
+        switch (difficulty) {
+            case Difficulty.Easy:
+                trapPercentage = 0.3f;
+                break;
+            case Difficulty.Medium:
+                trapPercentage = 0.5f;
+                break;
+            case Difficulty.Hard:
+                trapPercentage = 0.7f;
                 break;
         }
 
@@ -74,6 +81,7 @@ public class MapGenerator : MonoBehaviour {
 
         buildDungeonSkeleton();
         renderDungeonSkeleton();
+        checkTrapPercentage();
 
         populateKeys();
         populateMaps();
@@ -86,6 +94,20 @@ public class MapGenerator : MonoBehaviour {
         print("MAP GENERATED!!");
 	}
 
+    private void checkTrapPercentage() {
+        print(trapPercentage * mapSize * mapSize);
+        print("INITIAL TRAP COUNT: " + trapCount);
+        while (trapCount < trapPercentage * mapSize * mapSize) {
+            int randX = UnityEngine.Random.Range(0, mapSize);
+            int randY = UnityEngine.Random.Range(0, mapSize);
+            if (!map[randX, randY].isTrap) {
+                itemsAvailable -= map[randX,randY].itemsAvailable();
+                DestroyImmediate(map[randX, randY].gameObject);
+                renderSkeletonChunk(randX, randY, true);
+            }
+        }
+        print("ENDING TRAP COUNT: " + trapCount);
+    }
 
     private void buildDungeonSkeleton() {
         List<DungeonSkeletonChunk> frontier = new List<DungeonSkeletonChunk>();
@@ -156,38 +178,46 @@ public class MapGenerator : MonoBehaviour {
 
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
-                renderSkeletonChunk(i, j);
+                renderSkeletonChunk(i, j, false);
             }
         }
     }
 
-    private void renderSkeletonChunk(int i, int j) {
+    private void renderSkeletonChunk(int i, int j, bool mustHaveTrap) {
         DungeonSkeletonChunk skeletonChunk = skeleton[i, j];
         MapChunk current;
+        MapChunk[] chunks;
         switch (skeletonChunk.getSkeletonType()) {
             case ChunkType.FourDoors:
-                current = getRandomChunk(fourDoorsChunks);
+                chunks = fourDoorsChunks;
                 break;
             case ChunkType.ThreeDoors:
-                current = getRandomChunk(threeDoorsChunks);
+                chunks = threeDoorsChunks;
                 break;
             case ChunkType.OneDoor:
-                current = getRandomChunk(oneDoorChunks);
+                chunks = oneDoorChunks;
                 break;
             case ChunkType.OppositeDoors:
-                current = getRandomChunk(oppositeDoorChunks);
+                chunks = oppositeDoorChunks;
                 break;
             default:
-                current = getRandomChunk(sideDoorChunks);
+                chunks = sideDoorChunks;
                 break;
         }
-
+        if (mustHaveTrap) {
+            current = getRandomChunkWithTrap(chunks);
+        } else {
+            current = getRandomChunk(chunks);
+        }
         MapChunk newGO = Instantiate(current);
         newGO.name = String.Format("dungeon-{0}-{1}", i, j);
         newGO.transform.parent = transform;
         newGO.transform.localPosition = new Vector3(i * 3, j * 3, 0);
         newGO.RotateToMatch(skeletonChunk.doors);
         map[i, j] = newGO;
+        if (newGO.isTrap) {
+            trapCount++;
+        }
         itemsAvailable += newGO.itemsAvailable();
     }
 
@@ -306,7 +336,7 @@ public class MapGenerator : MonoBehaviour {
 
         skeleton[x, y].doors[i] = true;
         DestroyImmediate(map[x, y].gameObject);
-        renderSkeletonChunk(x, y);
+        renderSkeletonChunk(x, y, false);
         randomMapChunk = map[x,y];
 
         GameObject newGO = Instantiate(doorPrefab);
@@ -329,6 +359,8 @@ public class MapGenerator : MonoBehaviour {
         map = null;
         keyCount = 0;
         mapCount = 0;
+        trapCount = 0;
+        itemsAvailable = 0;
     }
 	
 	private MapChunk getRandomChunk(MapChunk[] mapChunks)
@@ -337,6 +369,15 @@ public class MapGenerator : MonoBehaviour {
 		
 		return mapChunks[idx];
 	}
+    private MapChunk getRandomChunkWithTrap(MapChunk[] mapChunks) {
+        MapChunk current = null;
+        while(current == null || !current.isTrap) {
+            int idx = UnityEngine.Random.Range(0, mapChunks.Length);
+            current = mapChunks[idx];
+        }
+        
+        return current;
+    }
 
     private void populateKeys() {
         while(itemsAvailable > 0 && keyAmount - keyCount > 0) {

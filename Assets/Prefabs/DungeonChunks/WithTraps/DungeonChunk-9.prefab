@@ -1987,6 +1987,7 @@ MonoBehaviour:
   bottomDoor: 1
   leftDoor: 0
   rightDoor: 1
+  isTrap: 1
 --- !u!114 &114754964490662162
 MonoBehaviour:
   m_ObjectHideFlags: 1
