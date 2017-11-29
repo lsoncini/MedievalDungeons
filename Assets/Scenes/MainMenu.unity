@@ -3822,9 +3822,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "Welcome to Medieval Dungeons,\ntry to last for as long as you can! To do
-    so, \nyou have to collect keys to get to the next \ndungeon before you run out
-    of time. Be careful, \ntraps and spiders may get in your way."
+  m_Text: "Welcome to Medieval Dungeons,\ntry to last as long as you can! To do so,
+    \nyou have to collect items and find the exit\nbefore you run out of time. Be
+    careful, \ntraps and spiders may get in your way."
 --- !u!222 &1479173666
 CanvasRenderer:
   m_ObjectHideFlags: 0

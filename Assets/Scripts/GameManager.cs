@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
@@ -50,17 +51,66 @@ public class GameManager : MonoBehaviour {
         if(ip != null) {
             ip.Reset();
         }
-        timeLeft = timeForLevel;
-        Time.timeScale = 1;
-        mapGenerator.seed += 1;
+
+        mapGenerator.SetItemDropRates();
         mapGenerator.Generate();
         putPlayerAtRandomPosition();
+
+        setItemsToPickInLevel();
+        setTimeForLevel();
+        timeLeft = timeForLevel;
+        Time.timeScale = 1;
         isGameOn = true;
+    }
+
+    private void setTimeForLevel() {
+        int baseTime = 0;
+        switch (mapGenerator.dungeonSize) {
+            case DungeonSize.Small:
+                baseTime = 90; //1:30
+                if(mapGenerator.difficulty != Difficulty.Easy) {
+                    baseTime += 30;
+                }
+                break;
+            case DungeonSize.Normal:
+                baseTime = 150; //2:30
+                break;
+            case DungeonSize.Big:
+                baseTime = 240; //4:00
+                break;
+        }
+        timeForLevel = baseTime;
+    }
+
+    private void setItemsToPickInLevel() {
+        ItemPicker ip = skeleton.GetComponent<ItemPicker>();
+        int keysNeeded = mapGenerator.GetKeyCount();
+        print(keysNeeded);
+        int mapsNeeded = mapGenerator.GetMapCount();
+        print(mapsNeeded);
+        switch (mapGenerator.difficulty) {
+            case Difficulty.Easy:
+                keysNeeded = UnityEngine.Random.Range(keysNeeded / 3, keysNeeded / 2 + 1);
+                mapsNeeded = UnityEngine.Random.Range(mapsNeeded / 3, mapsNeeded / 2 + 1);
+                break;
+            case Difficulty.Medium:
+                keysNeeded = UnityEngine.Random.Range(keysNeeded / 2, keysNeeded * 2 / 3 + 1);
+                mapsNeeded = UnityEngine.Random.Range(mapsNeeded / 2, mapsNeeded * 2 / 3 + 1);
+                break;
+            default:            //HARD mode asks for all items in map
+                break;
+        }
+        ip.keysNeeded = keysNeeded;
+        ip.mapsNeeded = mapsNeeded;
+    }
+
+    public void NextLevel() {
+        mapGenerator.seed += 1;
+        NewLevel();
     }
 
     private void putPlayerAtRandomPosition() {
         Vector3 randomPos = mapGenerator.GetRandomPlayerPositionInMap();
-        print(randomPos);
         skeleton.transform.position = randomPos;
         PanCameraToChunk();
     }

@@ -43,17 +43,31 @@ public class MapGenerator : MonoBehaviour {
     public void Generate() {
         UnityEngine.Random.InitState(seed);
         ClearMap();
-        switch (dungeonSize) {
-            case DungeonSize.Small:
-                mapSize = 5;
-                break;
-            case DungeonSize.Normal:
-                mapSize = 7;
-                break;
-            case DungeonSize.Big:
-                mapSize = 10;
-                break;
+        SetMapSize();
+        SetTrapPercentage();
+
+        if (keyAmount == -1 || mapAmount == -1 || speedupAmount == -1) {
+            SetItemDropRates();
         }
+
+        map = new MapChunk[mapSize, mapSize];
+        skeleton = new DungeonSkeletonChunk[mapSize, mapSize];
+
+        buildDungeonSkeleton();
+        renderDungeonSkeleton();
+        checkTrapPercentage();
+
+        putLightsToMap();
+        putDoorInRandomChunk();
+
+        populateKeys();
+        populateMaps();
+        populateSpeedups();
+
+        print("MAP GENERATED!!");
+	}
+
+    private void SetTrapPercentage() {
         switch (difficulty) {
             case Difficulty.Easy:
                 trapPercentage = 0.3f;
@@ -65,34 +79,21 @@ public class MapGenerator : MonoBehaviour {
                 trapPercentage = 0.7f;
                 break;
         }
+    }
 
-        if (keyAmount == -1) {
-            keyAmount = (mapSize * mapSize) / 5;
+    private void SetMapSize() {
+        switch (dungeonSize) {
+            case DungeonSize.Small:
+                mapSize = 5;
+                break;
+            case DungeonSize.Normal:
+                mapSize = 7;
+                break;
+            case DungeonSize.Big:
+                mapSize = 10;
+                break;
         }
-        if (mapAmount == -1) {
-            mapAmount = (mapSize * mapSize) / 10;
-        }
-        if (speedupAmount == -1) {
-            speedupAmount = (mapSize * mapSize) / 10;
-        }
-
-        map = new MapChunk[mapSize, mapSize];
-        skeleton = new DungeonSkeletonChunk[mapSize, mapSize];
-
-        buildDungeonSkeleton();
-        renderDungeonSkeleton();
-        checkTrapPercentage();
-
-        populateKeys();
-        populateMaps();
-        populateSpeedups();
-
-        putLightsToMap();
-
-        putDoorInRandomChunk();
-
-        print("MAP GENERATED!!");
-	}
+    }
 
     private void checkTrapPercentage() {
         print(trapPercentage * mapSize * mapSize);
@@ -359,6 +360,7 @@ public class MapGenerator : MonoBehaviour {
         map = null;
         keyCount = 0;
         mapCount = 0;
+        speedupCount = 0;
         trapCount = 0;
         itemsAvailable = 0;
     }
@@ -461,5 +463,28 @@ public class MapGenerator : MonoBehaviour {
 
     public int GetSpeedupCount() {
         return speedupCount;
+    }
+
+    public void SetItemDropRates() {
+        SetMapSize();
+        switch (difficulty) {
+            case Difficulty.Easy:
+                keyAmount = (mapSize * mapSize) / 5;
+                mapAmount = (mapSize * mapSize) / 5;
+                speedupAmount = (mapSize * mapSize) / 5;
+                break;
+            case Difficulty.Medium:
+                keyAmount = (mapSize * mapSize) / 7;
+                mapAmount = (mapSize * mapSize) / 7;
+                speedupAmount = (mapSize * mapSize) / 12;
+                break;
+            case Difficulty.Hard:
+                keyAmount = (mapSize * mapSize) / 10;
+                mapAmount = (mapSize * mapSize) / 10;
+                speedupAmount = (mapSize * mapSize) / 10;
+                break;
+        }
+        
+
     }
 }
