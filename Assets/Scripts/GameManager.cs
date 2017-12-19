@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour {
 
     public void NextLevel() {
         mapGenerator.seed += 1;
+        levelsWon++;
         NewLevel();
     }
 
@@ -140,7 +141,6 @@ public class GameManager : MonoBehaviour {
     public void LevelWon() {
         Time.timeScale = 0;
         isGameOn = false;
-        levelsWon++;
         nextLevelPanel.SetActive(true);
     }
 
@@ -153,5 +153,9 @@ public class GameManager : MonoBehaviour {
 
     public int GetTimeLeft() {
         return timeLeft;
+    }
+
+    public int GetLevelsWon() {
+        return levelsWon;
     }
 }
