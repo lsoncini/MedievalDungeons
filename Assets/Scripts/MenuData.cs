@@ -5,6 +5,7 @@ public class MenuData : MonoBehaviour {
 
     public Difficulty difficulty = Difficulty.Easy;
     public DungeonSize dungeonSize = DungeonSize.Small;
+    public GameMode gameMode = GameMode.Training;
     public int seedValue = 12345;
     public InputController input;
 
@@ -22,5 +23,9 @@ public class MenuData : MonoBehaviour {
 
     public void SetSeedValue() {
         this.seedValue = input.getValue();
+    }
+
+    public void SetGameMode(int gameMode) {
+        this.gameMode = (GameMode)gameMode;
     }
 }

@@ -2,6 +2,7 @@
 
 public class PauseManager : MonoBehaviour {
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject shopPanel;
 
     private GameManager gameManager;
 
@@ -11,7 +12,7 @@ public class PauseManager : MonoBehaviour {
     void Update() {
         if (gameManager.IsGameOn()) {
             if (Input.GetKeyDown(KeyCode.P)) {
-                if (!pausePanel.activeInHierarchy) {
+                if (Time.timeScale != 0) {
                     PauseGame();
                 } else {
                     ContinueGame();
@@ -26,5 +27,6 @@ public class PauseManager : MonoBehaviour {
     public void ContinueGame() {
         Time.timeScale = 1;
         pausePanel.SetActive(false);
+        shopPanel.SetActive(false);
     }
 }
